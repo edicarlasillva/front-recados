@@ -1,5 +1,14 @@
 const listaDeRecados = document.querySelector('.messages-list');
 
+async function editarRecado(messageId) {
+  try {
+    await api.put(`/messages/${messageId}`)
+  } catch (error) {
+    console.log('Erro no delete!');
+  }
+}
+
+
 async function deletarRecado(messageId) {
   try {
     await api.delete(`/messages/${messageId}`)
@@ -23,7 +32,7 @@ async function listarRecados() {
         <h2 class="card-title">${buscarRecado.title}</h2>
         <p class="card-description">${buscarRecado.description}</p>
         <div class="card-icons">
-          <i class="fas fa-edit"></i>
+          <i class="fas fa-edit" data-id="${buscarRecado.id}"></i>
           <i class="fas fa-trash" data-id="${buscarRecado.id}"></i>
         </div>
         `
@@ -35,7 +44,15 @@ async function listarRecados() {
         const messageId = iconDelete.getAttribute('data-id')
         deletarRecado(messageId)
       })
+      const iconEdit = mostrarRecado.querySelector('.fa-edit');
+
+      iconEdit.addEventListener("click", () => {
+        const messageId = iconEdit.getAttribute('data-id')
+        window.location.href = `editar-recado.html?id=${messageId}`
+      })
     })
+
+
   } catch (error) {
     console.log(`Erro ao buscar: ${error}`)
   }
